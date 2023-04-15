@@ -1,5 +1,5 @@
 module "parameters" {
-  source = "../"
+  source = "../.."
 
   parameters = {
     db_name = {
