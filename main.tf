@@ -2,7 +2,7 @@ resource "aws_ssm_parameter" "this" {
   for_each = var.parameters
 
   name            = lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
-  type            = lookup(each.value, "type", null)
+  type            = lookup(each.value, "type", "SecureString")
   value           = lookup(each.value, "value", null)
   description     = lookup(each.value, "description", null)
   allowed_pattern = lookup(each.value, "allowed_pattern", null)
