@@ -1,7 +1,7 @@
 # Terraform aws ssm multiple parameters creation
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zahornyak/terraform-aws-multiple-ssm-parameters)
 
-Terraform module that simplifies multiple parameters creation on parameter store.
+Terraform module that simplifies multiple parameters creation on parameter store. Also can parse .env files
 Especially useful with Terragrunt.
 
 
