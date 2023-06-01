@@ -14,3 +14,33 @@ resource "aws_ssm_parameter" "this" {
 
   tags = merge(var.tags, lookup(each.value, "tags", null))
 }
+
+
+data "local_file" "config_file" {
+  count    = var.file_path != null ? 1 : 0
+  filename = var.file_path
+}
+
+locals {
+  file_content = data.local_file.config_file[0].content
+  parsed_data = { for line in split("\n", local.file_content) :
+    regex("(.*?)\\s*=\\s*(.*)$", line)[0] => regex("(.*?)\\s*=\\s*(.*)$", line)[1]
+  }
+}
+
+resource "aws_ssm_parameter" "parsed" {
+  for_each = local.parsed_data
+
+  name  = each.key
+  type  = "SecureString"
+  value = each.value
+  #  description     = null
+  #  allowed_pattern = null
+  #  data_type       = null
+  #  insecure_value  = null
+  #  key_id          = null
+  #  overwrite       = null
+  #  tier            = null
+
+  tags = merge(var.tags, {})
+}

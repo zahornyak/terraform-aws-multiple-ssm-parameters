@@ -26,13 +26,47 @@ module "parameters" {
 }
 ```
 
+### Example parse env file
+```hcl
+module "parameters" {
+  source  = "zahornyak/multiple-ssm-parameters/aws"
+
+  file_path = ".env"
+
+}
+```
+
+### Example parse and use custom parameters
+```hcl
+module "parameters_and_parse_files" {
+  source  = "zahornyak/multiple-ssm-parameters/aws"
+
+  parameters = {
+    db_name = {
+      name        = "foo"
+      value       = "bar"
+      type        = "String"
+      description = "name of the db"
+    }
+    db_password = {
+      value       = "password"
+      type        = "String"
+      description = "secure password"
+    }
+  }
+
+  file_path = ".env"
+
+}
+```
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.37 |
 
 ## Providers
@@ -40,6 +74,7 @@ module "parameters" {
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.37 |
+| <a name="provider_local"></a> [local](#provider\_local) | n/a |
 
 ## Modules
 
@@ -49,12 +84,15 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_ssm_parameter.parsed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [local_file.config_file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_file_path"></a> [file\_path](#input\_file\_path) | file to parse | `string` | `null` | no |
 | <a name="input_parameters"></a> [parameters](#input\_parameters) | map of parameters for parameter store | `any` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Specifies a tags | `any` | `{}` | no |
 

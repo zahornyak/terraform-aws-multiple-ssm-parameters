@@ -9,3 +9,9 @@ variable "tags" {
   type        = any
   default     = {}
 }
+
+variable "file_path" {
+  description = "file to parse"
+  default     = null
+  type        = string
+}
