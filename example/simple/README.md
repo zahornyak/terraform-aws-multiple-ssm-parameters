@@ -19,6 +19,43 @@ module "parameters" {
 }
 ```
 
+Example of tf plan output
+```commandline
+  # module.parameters.aws_ssm_parameter.this["db_name"] will be created
+  + resource "aws_ssm_parameter" "this" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + description    = "name of the db"
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "foo"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.this["db_password"] will be created
+  + resource "aws_ssm_parameter" "this" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + description    = "secure password"
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "db_password"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

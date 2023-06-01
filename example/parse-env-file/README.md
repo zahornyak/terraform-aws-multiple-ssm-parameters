@@ -33,6 +33,173 @@ module "parameters_and_parse_files" {
 ```
 
 
+### Example of tf plan output
+```commandline
+Terraform will perform the following actions:
+
+  # module.parameters.aws_ssm_parameter.parsed["CERTIFICATE"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "CERTIFICATE"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["DB_NAME"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "DB_NAME"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["DB_PASSWORD"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "DB_PASSWORD"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["SECRET"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "SECRET"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+```
+```commandline
+Terraform will perform the following actions:
+
+  # module.parameters.aws_ssm_parameter.parsed["CERTIFICATE"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "CERTIFICATE"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["DB_NAME"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "DB_NAME"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["DB_PASSWORD"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "DB_PASSWORD"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.parsed["SECRET"] will be created
+  + resource "aws_ssm_parameter" "parsed" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "SECRET"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "SecureString"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.this["db_name"] will be created
+  + resource "aws_ssm_parameter" "this" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + description    = "name of the db"
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "foo"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+  # module.parameters.aws_ssm_parameter.this["db_password"] will be created
+  + resource "aws_ssm_parameter" "this" {
+      + arn            = (known after apply)
+      + data_type      = (known after apply)
+      + description    = "secure password"
+      + id             = (known after apply)
+      + insecure_value = (known after apply)
+      + key_id         = (known after apply)
+      + name           = "db_password"
+      + tags_all       = (known after apply)
+      + tier           = (known after apply)
+      + type           = "String"
+      + value          = (sensitive value)
+      + version        = (known after apply)
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+```
+
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 

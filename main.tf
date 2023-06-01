@@ -22,10 +22,9 @@ data "local_file" "config_file" {
 }
 
 locals {
-  file_content = data.local_file.config_file[0].content
-  parsed_data = { for line in split("\n", local.file_content) :
+  parsed_data = var.file_path != null ? { for line in split("\n", data.local_file.config_file[0].content) :
     regex("(.*?)\\s*=\\s*(.*)$", line)[0] => regex("(.*?)\\s*=\\s*(.*)$", line)[1]
-  }
+  } : {}
 }
 
 resource "aws_ssm_parameter" "parsed" {
