@@ -1,6 +1,8 @@
 module "parameters" {
   source = "../.."
 
+  parameter_prefix = "/dev/"
+
   parameters = {
     db_name = {
       name        = "foo"

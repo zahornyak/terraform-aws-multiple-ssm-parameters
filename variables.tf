@@ -15,3 +15,9 @@ variable "file_path" {
   default     = null
   type        = string
 }
+
+variable "parameter_prefix" {
+  description = "prefix for parameter names. For example you wanna split dev/prod parameters so you wanna add /service_name/development/ prefix before parameter name"
+  default     = null
+  type        = string
+}

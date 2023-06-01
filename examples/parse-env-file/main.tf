@@ -1,6 +1,8 @@
 module "parse_files" {
   source = "../.."
 
+  parameter_prefix = "/dev/"
+
   file_path = ".env"
 
 }

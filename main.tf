@@ -1,7 +1,7 @@
 resource "aws_ssm_parameter" "this" {
   for_each = var.parameters
 
-  name            = lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
+  name            = var.parameter_prefix != null ? "${var.parameter_prefix}${lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")}" : lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
   type            = lookup(each.value, "type", "SecureString")
   value           = lookup(each.value, "value", null)
   description     = lookup(each.value, "description", null)
@@ -30,7 +30,7 @@ locals {
 resource "aws_ssm_parameter" "parsed" {
   for_each = local.parsed_data
 
-  name  = each.key
+  name  = var.parameter_prefix != null ? "${var.parameter_prefix}${each.key}" : each.key
   type  = "SecureString"
   value = each.value
   #  description     = null

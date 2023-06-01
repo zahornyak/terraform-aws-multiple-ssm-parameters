@@ -10,6 +10,9 @@ Especially useful with Terragrunt.
 module "parameters" {
   source  = "zahornyak/multiple-ssm-parameters/aws"
 
+  # prefix for parameter name
+  parameter_prefix = "/dev/"
+  
   parameters = {
     db_name = {
       name        = "foo"
@@ -31,6 +34,9 @@ module "parameters" {
 module "parameters" {
   source  = "zahornyak/multiple-ssm-parameters/aws"
 
+  # prefix for parameter name
+  parameter_prefix = "/dev/"
+  
   file_path = ".env"
 
 }
@@ -93,6 +99,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_file_path"></a> [file\_path](#input\_file\_path) | file to parse | `string` | `null` | no |
+| <a name="input_parameter_prefix"></a> [parameter\_prefix](#input\_parameter\_prefix) | prefix for parameter names. For example you wanna split dev/prod parameters so you wanna add /service\_name/development/ prefix before parameter name | `string` | `null` | no |
 | <a name="input_parameters"></a> [parameters](#input\_parameters) | map of parameters for parameter store | `any` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Specifies a tags | `any` | `{}` | no |
 
