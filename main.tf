@@ -22,8 +22,14 @@ data "local_file" "config_file" {
 }
 
 locals {
-  parsed_data = var.file_path != null ? { for line in split("\n", data.local_file.config_file[0].content) :
-    regex("(.*?)\\s*=\\s*(.*)$", line)[0] => regex("(.*?)\\s*=\\s*(.*)$", line)[1]
+  #  parsed_data = var.file_path != null ? {
+  #    for line in split("\n", data.local_file.config_file[0].content) :
+  #    split("=", line)[0] => split("=", line)[1]
+  #  } : {}
+  parsed_data = var.file_path != null ? {
+    for line in split("\n", data.local_file.config_file[0].content) :
+    split("=", line)[0] => split("=", line)[1]
+    if can(split("=", line)[1])
   } : {}
 }
 
