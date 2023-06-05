@@ -1,11 +1,11 @@
 output "parameters_ids" {
   description = "parameters ids map"
-  value       = { for k, v in aws_ssm_parameter.this : k => v["id"] }
+  value       = { for k, v in merge(aws_ssm_parameter.this, aws_ssm_parameter.parsed) : k => v["id"] }
 }
 
 output "parameters_arns" {
   description = "parameters arns map"
-  value       = { for k, v in aws_ssm_parameter.this : k => v["arn"] }
+  value       = { for k, v in merge(aws_ssm_parameter.this, aws_ssm_parameter.parsed) : k => v["arn"] }
 }
 
 output "parameters_name_arns" {
