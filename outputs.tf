@@ -9,8 +9,8 @@ output "parameters_arns" {
 }
 
 output "parameters_name_arns" {
-  description = "parameters arns map with names of parameter"
+  description = "merged parameters arns map with names of parameter"
   value = {
-    for key, param in aws_ssm_parameter.this : param.name => aws_ssm_parameter.this[key].arn
+    for key, param in merge(aws_ssm_parameter.this, aws_ssm_parameter.parsed) : param.name => param.arn
   }
 }

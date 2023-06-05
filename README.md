@@ -118,5 +118,5 @@ No modules.
 |------|-------------|
 | <a name="output_parameters_arns"></a> [parameters\_arns](#output\_parameters\_arns) | parameters arns map |
 | <a name="output_parameters_ids"></a> [parameters\_ids](#output\_parameters\_ids) | parameters ids map |
-| <a name="output_parameters_name_arns"></a> [parameters\_name\_arns](#output\_parameters\_name\_arns) | parameters arns map with names of parameter |
+| <a name="output_parameters_name_arns"></a> [parameters\_name\_arns](#output\_parameters\_name\_arns) | merged parameters arns map with names of parameter |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

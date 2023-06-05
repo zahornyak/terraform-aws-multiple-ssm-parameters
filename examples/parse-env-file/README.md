@@ -217,7 +217,6 @@ No providers.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_parameters_and_parse_files"></a> [parameters\_and\_parse\_files](#module\_parameters\_and\_parse\_files) | ../.. | n/a |
-| <a name="module_parse_files"></a> [parse\_files](#module\_parse\_files) | ../.. | n/a |
 
 ## Resources
 

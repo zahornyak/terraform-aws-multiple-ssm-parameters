@@ -1,11 +1,11 @@
-module "parse_files" {
-  source = "../.."
-
-  parameter_prefix = "/dev/"
-
-  file_path = ".env"
-
-}
+#module "parse_files" {
+#  source = "../.."
+#
+#  parameter_prefix = "/dev/"
+#
+#  file_path = ".env"
+#
+#}
 
 
 module "parameters_and_parse_files" {
