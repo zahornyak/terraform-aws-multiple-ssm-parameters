@@ -41,6 +41,15 @@ module "parameters" {
 
 }
 ```
+#### .env example:
+```commandline
+DB_NAME=mysql
+DB_PASSWORD=password
+
+# example comment here
+CERTIFICATE="dawjhjdkl;aefjhguwyidhjakenka"
+SECRET="sjkbfdksnjwdjewlknfkj"
+```
 
 ### Example parse and use custom parameters
 ```hcl
