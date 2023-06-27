@@ -14,6 +14,9 @@ module "parameters" {
       value       = "password"
       type        = "String"
       description = "secure password"
+      unlocked    = true
     }
   }
+
+  #  unlocked = true
 }

@@ -21,3 +21,9 @@ variable "parameter_prefix" {
   default     = null
   type        = string
 }
+
+variable "unlocked" {
+  description = "if true - sets the ignore lifecycle policy and disable terraform managing the version of the resource"
+  type        = bool
+  default     = false
+}

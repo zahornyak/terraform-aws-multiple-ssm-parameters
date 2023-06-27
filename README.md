@@ -75,6 +75,32 @@ module "parameters_and_parse_files" {
 }
 ```
 
+#### Unlocked variables example(wont be changed by terraform):
+You can lock each parameter or all the parameters
+```hcl
+module "parameters" {
+  source  = "zahornyak/multiple-ssm-parameters/aws"
+  
+  parameters = {
+    db_name = {
+      name        = "foo"
+      value       = "bar"
+      type        = "String"
+      description = "name of the db"
+    }
+    db_password = {
+      value       = "password"
+      type        = "String"
+      description = "secure password"
+      unlocked = true
+    }
+  }
+
+  #  unlocked = true
+}
+```
+
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -101,6 +127,7 @@ No modules.
 |------|------|
 | [aws_ssm_parameter.parsed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [aws_ssm_parameter.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
+| [aws_ssm_parameter.unlocked](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_parameter) | resource |
 | [local_file.config_file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
@@ -111,6 +138,7 @@ No modules.
 | <a name="input_parameter_prefix"></a> [parameter\_prefix](#input\_parameter\_prefix) | prefix for parameter names. For example you wanna split dev/prod parameters so you wanna add /service\_name/development/ prefix before parameter name | `string` | `null` | no |
 | <a name="input_parameters"></a> [parameters](#input\_parameters) | map of parameters for parameter store | `any` | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Specifies a tags | `any` | `{}` | no |
+| <a name="input_unlocked"></a> [unlocked](#input\_unlocked) | if true - sets the ignore lifecycle policy and disable terraform managing the version of the resource | `bool` | `false` | no |
 
 ## Outputs
 
