@@ -100,6 +100,58 @@ module "parameters" {
 }
 ```
 
+#### You can use all the environments for container definition secrets:
+```hcl
+module "parameters" {
+  source  = "zahornyak/multiple-ssm-parameters/aws"
+
+  parameters = {
+    db_name = {
+      name        = "foo"
+      value       = "bar"
+      type        = "String"
+      description = "name of the db"
+    }
+    db_password = {
+      value       = "password"
+      type        = "String"
+      description = "secure password"
+      unlocked = true
+    }
+  }
+}
+
+locals {
+  ssm_vars = [
+    for k, v in module.parameters.parameters_arns : {
+      name      = k
+      valueFrom = v
+    }
+  ]
+}
+
+module "service_container_definition" {
+  source  = "registry.terraform.io/cloudposse/ecs-container-definition/aws"
+
+  container_image = "nginx:latest"
+  container_name  = "example"
+  essential       = true
+
+  stop_timeout = 5
+  
+  port_mappings = [
+    {
+      containerPort = 80
+      protocol      = "tcp"
+      hostPort      = null
+    }
+  ]
+  
+  secrets = local.ssm_vars
+
+}
+```
+
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
