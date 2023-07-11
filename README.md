@@ -121,15 +121,6 @@ module "parameters" {
   }
 }
 
-locals {
-  ssm_vars = [
-    for k, v in module.parameters.parameters_arns : {
-      name      = k
-      valueFrom = v
-    }
-  ]
-}
-
 module "service_container_definition" {
   source  = "registry.terraform.io/cloudposse/ecs-container-definition/aws"
 
@@ -147,7 +138,7 @@ module "service_container_definition" {
     }
   ]
   
-  secrets = local.ssm_vars
+  secrets = module.parameters.container_definitions_secrets
 
 }
 ```
@@ -196,6 +187,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_container_definitions_secrets"></a> [container\_definitions\_secrets](#output\_container\_definitions\_secrets) | useful output for container definition secrets variable |
 | <a name="output_parameters_arns"></a> [parameters\_arns](#output\_parameters\_arns) | parameters arns map |
 | <a name="output_parameters_ids"></a> [parameters\_ids](#output\_parameters\_ids) | parameters ids map |
 | <a name="output_parameters_name_arns"></a> [parameters\_name\_arns](#output\_parameters\_name\_arns) | merged parameters arns map with names of parameter |

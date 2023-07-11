@@ -14,3 +14,16 @@ output "parameters_name_arns" {
     for key, param in merge(aws_ssm_parameter.this, aws_ssm_parameter.parsed, aws_ssm_parameter.unlocked) : param.name => param.arn
   }
 }
+
+locals {
+  parameter_arns = { for k, v in merge(aws_ssm_parameter.this, aws_ssm_parameter.parsed, aws_ssm_parameter.unlocked) : k => v["arn"] }
+}
+output "container_definitions_secrets" {
+  value = [
+    for k, v in local.parameter_arns : {
+      name      = k
+      valueFrom = v
+    }
+  ]
+  description = "useful output for container definition secrets variable"
+}
