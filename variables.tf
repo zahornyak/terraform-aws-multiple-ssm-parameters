@@ -27,3 +27,9 @@ variable "unlocked" {
   type        = bool
   default     = false
 }
+
+variable "data" {
+  description = "data to store in parameter store"
+  type        = bool
+  default     = false
+}

@@ -70,3 +70,8 @@ resource "aws_ssm_parameter" "parsed" {
 
   tags = merge(var.tags, {})
 }
+
+data "aws_ssm_parameter" "data" {
+  for_each = { for k, v in var.parameters : k => v if var.data || try(v.data, false) == true }
+  name     = var.parameter_prefix != null ? "${var.parameter_prefix}${lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")}" : lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
+}
