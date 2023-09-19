@@ -1,5 +1,5 @@
 resource "aws_ssm_parameter" "this" {
-  for_each = { for k, v in var.parameters : k => v if !var.unlocked && try(v.unlocked, false) == false || !var.data && try(v.data, false) == false }
+  for_each = { for k, v in var.parameters : k => v if !var.unlocked && try(v.unlocked, false) == false && !var.data && try(v.data, false) == false }
 
   name            = var.parameter_prefix != null ? "${var.parameter_prefix}${lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")}" : lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
   type            = lookup(each.value, "type", "SecureString")
@@ -16,7 +16,7 @@ resource "aws_ssm_parameter" "this" {
 }
 
 resource "aws_ssm_parameter" "unlocked" {
-  for_each = { for k, v in var.parameters : k => v if var.unlocked || try(v.unlocked, false) == true || var.data && try(v.data, false) == false }
+  for_each = { for k, v in var.parameters : k => v if var.unlocked || try(v.unlocked, false) == true && var.data && try(v.data, false) == false }
 
   name            = var.parameter_prefix != null ? "${var.parameter_prefix}${lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")}" : lookup(each.value, "name", null) == null ? each.key : lookup(each.value, "name")
   type            = lookup(each.value, "type", "SecureString")
