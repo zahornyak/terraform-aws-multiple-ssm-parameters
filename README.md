@@ -151,13 +151,13 @@ module "service_container_definition" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.37 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.37 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.37 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.37 |
 | <a name="provider_local"></a> [local](#provider\_local) | n/a |
 
 ## Modules
