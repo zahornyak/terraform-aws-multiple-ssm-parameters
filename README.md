@@ -1,149 +1,61 @@
-# Terraform aws ssm multiple parameters creation
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zahornyak/terraform-aws-multiple-ssm-parameters)
+# terraform-aws-multiple-ssm-parameters
 
-Terraform module that simplifies multiple parameters creation on parameter store. Also can parse .env files
-Especially useful with Terragrunt.
+Create many AWS SSM Parameter Store entries from a map and/or a `.env` file.
 
-
-### Example usage
 ```hcl
 module "parameters" {
-  source  = "zahornyak/multiple-ssm-parameters/aws"
+  source = "zahornyak/multiple-ssm-parameters/aws"
 
-  # prefix for parameter name
-  parameter_prefix = "/dev/"
-  
+  parameter_prefix = "/myapp/dev/"
+
   parameters = {
     db_name = {
-      name        = "foo"
-      value       = "bar"
-      type        = "String"
-      description = "name of the db"
+      name  = "DB_NAME"
+      value = "mydb"
+      type  = "String"
     }
     db_password = {
-      value       = "password"
-      type        = "String"
-      description = "secure password"
+      value    = "initial-only"
+      unlocked = true # Terraform will not update the value after create
     }
   }
 }
 ```
 
-### Example parse env file
+## `.env` file
+
+Set `file_path` to load `KEY=value` lines. Comments (`#`) and empty lines are skipped. Values may be quoted.
+
 ```hcl
 module "parameters" {
-  source  = "zahornyak/multiple-ssm-parameters/aws"
-
-  # prefix for parameter name
-  parameter_prefix = "/dev/"
-  
-  file_path = ".env"
-
-}
-```
-#### .env example:
-```commandline
-DB_NAME=mysql
-DB_PASSWORD=password
-
-# example comment here
-CERTIFICATE="dawjhjdkl;aefjhguwyidhjakenka"
-SECRET="sjkbfdksnjwdjewlknfkj"
-```
-
-### Example parse and use custom parameters
-```hcl
-module "parameters_and_parse_files" {
-  source  = "zahornyak/multiple-ssm-parameters/aws"
-
-  parameters = {
-    db_name = {
-      name        = "foo"
-      value       = "bar"
-      type        = "String"
-      description = "name of the db"
-    }
-    db_password = {
-      value       = "password"
-      type        = "String"
-      description = "secure password"
-    }
-  }
-
-  file_path = ".env"
-
+  source           = "zahornyak/multiple-ssm-parameters/aws"
+  parameter_prefix = "/myapp/dev/"
+  file_path        = ".env"
 }
 ```
 
-#### Unlocked variables example(wont be changed by terraform):
-You can lock each parameter or all the parameters
+You can combine `parameters` and `file_path` in the same module call.
+
+## Read existing parameters
+
+Use `data = true` on one entry or set `data = true` on the module to look up parameters that already exist:
+
 ```hcl
-module "parameters" {
-  source  = "zahornyak/multiple-ssm-parameters/aws"
-  
-  parameters = {
-    db_name = {
-      name        = "foo"
-      value       = "bar"
-      type        = "String"
-      description = "name of the db"
-    }
-    db_password = {
-      value       = "password"
-      type        = "String"
-      description = "secure password"
-      unlocked = true
-    }
-  }
-
-  #  unlocked = true
-}
-```
-
-#### You can use all the environments for container definition secrets:
-```hcl
-module "parameters" {
-  source  = "zahornyak/multiple-ssm-parameters/aws"
-
-  parameters = {
-    db_name = {
-      name        = "foo"
-      value       = "bar"
-      type        = "String"
-      description = "name of the db"
-    }
-    db_password = {
-      value       = "password"
-      type        = "String"
-      description = "secure password"
-      unlocked = true
-    }
+parameters = {
+  existing_secret = {
+    name = "EXISTING_PARAM"
+    data = true
   }
 }
-
-module "service_container_definition" {
-  source  = "registry.terraform.io/cloudposse/ecs-container-definition/aws"
-
-  container_image = "nginx:latest"
-  container_name  = "example"
-  essential       = true
-
-  stop_timeout = 5
-  
-  port_mappings = [
-    {
-      containerPort = 80
-      protocol      = "tcp"
-      hostPort      = null
-    }
-  ]
-  
-  secrets = module.parameters.container_definitions_secrets
-
-}
 ```
 
+## ECS secrets
 
+`container_definitions_secrets` is shaped for the Cloud Posse ECS container definition module: each item uses the **map key** as the container env name and the parameter ARN as `valueFrom`.
+
+## Examples
+
+See [`examples/simple`](examples/simple) and [`examples/parse-env-file`](examples/parse-env-file).
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -152,13 +64,14 @@ module "service_container_definition" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.37 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.4 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.37 |
-| <a name="provider_local"></a> [local](#provider\_local) | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | >= 2.4 |
 
 ## Modules
 
@@ -178,19 +91,19 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_data"></a> [data](#input\_data) | data to store in parameter store | `bool` | `false` | no |
-| <a name="input_file_path"></a> [file\_path](#input\_file\_path) | file to parse | `string` | `null` | no |
-| <a name="input_parameter_prefix"></a> [parameter\_prefix](#input\_parameter\_prefix) | prefix for parameter names. For example you wanna split dev/prod parameters so you wanna add /service\_name/development/ prefix before parameter name | `string` | `null` | no |
-| <a name="input_parameters"></a> [parameters](#input\_parameters) | map of parameters for parameter store | `any` | `{}` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Specifies a tags | `any` | `{}` | no |
-| <a name="input_unlocked"></a> [unlocked](#input\_unlocked) | if true - sets the ignore lifecycle policy and disable terraform managing the version of the resource | `bool` | `false` | no |
+| <a name="input_data"></a> [data](#input\_data) | When true, read existing parameters instead of creating them (same as `data = true` on each entry). | `bool` | `false` | no |
+| <a name="input_file_path"></a> [file\_path](#input\_file\_path) | Optional path to a `.env` file (`KEY=value` lines; `#` comments and blank lines are ignored). | `string` | `null` | no |
+| <a name="input_parameter_prefix"></a> [parameter\_prefix](#input\_parameter\_prefix) | Prefix prepended to every parameter name (for example `/myapp/dev/`). | `string` | `null` | no |
+| <a name="input_parameters"></a> [parameters](#input\_parameters) | Map of SSM parameters. Map key is used in outputs and ECS secrets; optional `name` sets the Parameter Store path. | <pre>map(object({<br>    name            = optional(string)<br>    value           = optional(string)<br>    type            = optional(string, "SecureString")<br>    description     = optional(string)<br>    allowed_pattern = optional(string)<br>    data_type       = optional(string)<br>    insecure_value  = optional(string)<br>    key_id          = optional(string)<br>    overwrite       = optional(bool)<br>    tier            = optional(string)<br>    tags            = optional(map(string), {})<br>    unlocked        = optional(bool, false)<br>    data            = optional(bool, false)<br>  }))</pre> | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to every created parameter. | `map(string)` | `{}` | no |
+| <a name="input_unlocked"></a> [unlocked](#input\_unlocked) | When true, Terraform ignores value changes for all parameters (same as `unlocked = true` on each entry). | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_container_definitions_secrets"></a> [container\_definitions\_secrets](#output\_container\_definitions\_secrets) | useful output for container definition secrets variable |
-| <a name="output_parameters_arns"></a> [parameters\_arns](#output\_parameters\_arns) | parameters arns map |
-| <a name="output_parameters_ids"></a> [parameters\_ids](#output\_parameters\_ids) | parameters ids map |
-| <a name="output_parameters_name_arns"></a> [parameters\_name\_arns](#output\_parameters\_name\_arns) | merged parameters arns map with names of parameter |
+| <a name="output_container_definitions_secrets"></a> [container\_definitions\_secrets](#output\_container\_definitions\_secrets) | ECS container definition secrets block (name = map key, valueFrom = parameter ARN). |
+| <a name="output_parameters_arns"></a> [parameters\_arns](#output\_parameters\_arns) | Map of parameter keys to SSM parameter ARNs. |
+| <a name="output_parameters_ids"></a> [parameters\_ids](#output\_parameters\_ids) | Map of parameter keys to SSM parameter IDs. |
+| <a name="output_parameters_name_arns"></a> [parameters\_name\_arns](#output\_parameters\_name\_arns) | Map of SSM parameter names to ARNs. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
