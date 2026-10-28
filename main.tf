@@ -10,10 +10,15 @@ locals {
     if trimspace(line) != "" && !startswith(trimspace(line), "#")
   ] : []
 
+  env_matches = [
+    for line in local.env_lines : regexall("^([^=]+)=(.*)$", line)[0]
+    if length(regexall("^([^=]+)=(.*)$", line)) > 0
+  ]
+
   parsed_data = {
-    for line in local.env_lines :
-    trimspace(split("=", line, 2)[0]) => trim(trimspace(split("=", line, 2)[1]), "\"")
-    if length(split("=", line, 2)) == 2 && trimspace(split("=", line, 2)[0]) != ""
+    for groups in local.env_matches :
+    trimspace(groups[0]) => trim(trimspace(groups[1]), "\"")
+    if trimspace(groups[0]) != ""
   }
 
   is_data_source = {
